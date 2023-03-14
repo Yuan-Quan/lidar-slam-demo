@@ -1,0 +1,20 @@
+<launch>
+    <!-- <include file="$(find teleop_twist_joy)/launch/teleop.launch" /> -->
+
+    <node name="cartographer_node" pkg="cartographer_ros"
+      type="cartographer_node" args="
+          -configuration_directory $(find ucar_navigation)/configuration_files 
+          -configuration_basename 15th_car.lua"
+      output="screen">
+    <remap from="scan" to="scan" />
+  </node>
+
+  <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
+      type="cartographer_occupancy_grid_node" args="-resolution 0.01" />
+
+  <node name="rviz" pkg="rviz" type="rviz" 
+      args="-d $(find ucar_navigation)/configuration_files/cartographer.rviz" />
+
+    <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="0 0 0 0 0 0 /map /odom 100" />
+</launch>
+
